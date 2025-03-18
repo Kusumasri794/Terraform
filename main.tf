@@ -17,7 +17,7 @@ region = "us-east-1"
 resource "aws_instance" "webserver" {
 instance_type          = "t2.micro"
 ami                    = "ami-0d5eff06f840b45e9"
-key_name                = "kusuma"
+key_name                = "tef_kp"
 vpc_security_group_ids = [aws_security_group.webserver-sg.id]
 user_data               = "${file("apache.sh")}"
 tags = {
