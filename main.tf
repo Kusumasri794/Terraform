@@ -18,6 +18,7 @@ resource "aws_instance" "webserver" {
 instance_type = "t2.micro"
 ami = "ami-0d5eff06f840b45e9"
 vpc_security_group_ids = [aws_security_group.webserver-sg.id]
+userdata = "${file("apache.sh")}"
 tags = {
 Name = "web-server"
 }
