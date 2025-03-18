@@ -14,18 +14,13 @@ provider "aws" {
 region = "us-east-1"
 }
 
-resource "aws_instance" "webserver" {
-instance_type          = "t2.micro"
-ami                    = "ami-0d5eff06f840b45e9"
-key_name                = "tef_kp"
-vpc_security_group_ids = [aws_security_group.webserver-sg.id]
-user_data               = "${file("apache.sh")}"
-tags = {
-Name = "web-server"
+# Create a VPC
+resource "aws_vpc" "my-vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "netflix-VPC"
+  }
 }
-
-}
-
 
 # Create Web Security Group
 resource "aws_security_group" "webserver-sg" {
@@ -59,11 +54,16 @@ resource "aws_security_group" "webserver-sg" {
     Name = "Web-SG"
   }
 }
-
-# Create a VPC
-resource "aws_vpc" "my-vpc" {
-  cidr_block = "10.0.0.0/16"
-  tags = {
-    Name = "netflix-VPC"
-  }
+# create web server
+resource "aws_instance" "webserver" {
+instance_type          = "t2.micro"
+ami                    = "ami-0d5eff06f840b45e9"
+key_name                = "tef_kp"
+vpc_security_group_ids = [aws_security_group.webserver-sg.id]
+user_data               = "${file("apache.sh")}"
+tags = {
+Name = "web-server"
 }
+}
+
+
